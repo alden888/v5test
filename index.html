@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="V5 Medical Product Catalog - 完整的医疗产品目录，包括手术缝合线、防护用品、手术包、注射器等">
+    <meta name="keywords" content="手术缝合线,医疗防护用品,手术包,注射器,医疗耗材,V5 Medical">
+    <meta name="author" content="V5 Medical LTD">
+    <meta name="robots" content="index, follow">
+
+    <title>产品目录 | V5 Medical LTD - 全球医疗供应商</title>
+    
+    <link rel="icon" type="image/x-icon" href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/favicon.ico">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 自定义样式 */
+        .category-group summary { list-style: none; cursor: pointer; }
+        .category-group summary::-webkit-details-marker { display: none; }
+        .category-link { transition: all 0.2s; border-left: 3px solid transparent; cursor: pointer; }
+        .category-link:hover, .category-link.active { color: #1e40af; border-left-color: #1e40af; background-color: #eff6ff; padding-left: 10px; font-weight: 600; }
+        .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        
+        /* 加载动画 */
+        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        
+        /* 产品详情模态框 */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 1200px; max-height: 90vh; overflow-y: auto; border-radius: 12px; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover, .close:focus { color: black; text-decoration: none; }
+        
+        /* 平滑滚动 */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+
+<body class="smooth-scroll font-sans text-gray-800 bg-gray-50">
+  
+    <div id="loader" class="page-loader">
+        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+    </div>
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center gap-3">
+                    <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" 
+                         onerror="this.src='v5logo.png'; this.onerror=null;" 
+                         class="h-12 w-auto" 
+                         alt="V5 Medical Logo">
+                    <div>
+                        <div class="font-bold text-xl leading-none">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-200">全球医疗供应商</div>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex gap-8">
+                    <a href="#" class="nav-link text-white font-bold border-b-2 border-white transition">首页</a>
+                    <a href="#about" class="nav-link text-blue-100 hover:text-white transition">关于我们</a>
+                    <a href="#products" class="nav-link text-blue-100 hover:text-white transition">产品目录</a>
+                    <a href="#contact" class="nav-link text-blue-100 hover:text-white transition">联系我们</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 px-5 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white text-gray-800 border-t absolute w-full shadow-xl">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#" class="block px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-bold">首页</a>
+                <a href="#about" class="block px-4 py-2 rounded-lg hover:bg-blue-50">关于我们</a>
+                <a href="#products" class="block px-4 py-2 rounded-lg hover:bg-blue-50">产品目录</a>
+                <a href="#contact" class="block px-4 py-2 rounded-lg hover:bg-blue-50">联系我们</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">WhatsApp 联系</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 pt-32 pb-16 text-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">产品目录</h1>
+            <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">ISO 13485 认证医疗耗材，专业的全球医疗供应商</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#products" class="bg-white text-blue-900 font-bold px-6 py-3 rounded-lg hover:bg-gray-100 transition flex items-center gap-2">
+                    <i class="fas fa-search"></i> 浏览产品
+                </a>
+                <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="bg-transparent border-2 border-white text-white font-bold px-6 py-3 rounded-lg hover:bg-white hover:text-blue-900 transition flex items-center gap-2">
+                    <i class="fas fa-download"></i> 下载PDF
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">关于我们</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">苏州维五医疗科技有限公司是一家专业的医疗设备销售公司，致力于为全球客户提供高质量的医疗耗材产品。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-blue-50 rounded-xl p-6 text-center">
+                    <i class="fas fa-certificate text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">ISO 认证</h3>
+                    <p class="text-gray-600 text-sm">所有产品均通过ISO 13485认证，确保最高质量标准</p>
+                </div>
+                
+                <div class="bg-green-50 rounded-xl p-6 text-center">
+                    <i class="fas fa-globe text-4xl text-green-600 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">全球供应</h3>
+                    <p class="text-gray-600 text-sm">产品出口到40多个国家和地区，服务全球客户</p>
+                </div>
+                
+                <div class="bg-purple-50 rounded-xl p-6 text-center">
+                    <i class="fas fa-shield-alt text-4xl text-purple-600 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">安全可靠</h3>
+                    <p class="text-gray-600 text-sm">严格的质量控制体系，确保产品安全可靠</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">产品目录</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">我们提供全面的医疗耗材产品，满足各种医疗需求</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-4 gap-8">
+                
+                <aside class="lg:col-span-1 space-y-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-24">
+                        <h3 class="font-bold text-lg mb-4 text-gray-900 flex items-center gap-2">
+                            <i class="fas fa-search text-blue-600"></i> 搜索产品
+                        </h3>
+                        <div class="relative mb-6">
+                            <input type="text" id="searchInput" placeholder="搜索产品名称、代码..." 
+                                   class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-4 text-gray-900 flex items-center gap-2">
+                            <i class="fas fa-filter text-blue-600"></i> 产品分类
+                        </h3>
+                        <div class="space-y-1 text-sm text-gray-600" id="categoryFilters">
+                            <div class="cursor-pointer category-link active py-2" onclick="filterCategory('all', this)">
+                                <i class="fas fa-th-large mr-2"></i> 所有产品
+                            </div>
+                            
+                            <details class="category-group" open>
+                                <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                    <span><i class="fas fa-cut mr-2 w-5"></i> 手术缝合线</span>
+                                    <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                                </summary>
+                                <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('absorbable', this)">可吸收缝合线</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('non-absorbable', this)">不可吸收缝合线</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('needle', this)">缝合针</div>
+                                </div>
+                            </details>
+
+                            <details class="category-group">
+                                <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                    <span><i class="fas fa-box-open mr-2 w-5"></i> 手术器械</span>
+                                    <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                                </summary>
+                                <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('blade', this)">手术刀片</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('scalpel', this)">一次性手术刀</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('lancet', this)">采血针</div>
+                                </div>
+                            </details>
+
+                            <details class="category-group">
+                                <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                    <span><i class="fas fa-band-aid mr-2 w-5"></i> 纱布敷料</span>
+                                    <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                                </summary>
+                                <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('gauze-swab', this)">纱布片</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('gauze-ball', this)">纱布球</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('gauze-pad', this)">腹部纱布垫</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('gauze-bandage', this)">纱布绷带</div>
+                                </div>
+                            </details>
+
+                            <details class="category-group">
+                                <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                    <span><i class="fas fa-user-md mr-2 w-5"></i> 防护用品</span>
+                                    <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                                </summary>
+                                <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('mask', this)">口罩</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('gown', this)">手术衣</div>
+                                    <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('coverall', this)">防护服</div>
+                                </div>
+                            </details>
+
+                            <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('surgical-pack', this)">
+                                <i class="fas fa-hospital mr-2 w-5"></i> 手术包
+                            </div>
+                            
+                            <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('syringe', this)">
+                                <i class="fas fa-syringe mr-2 w-5"></i> 注射器系列
+                            </div>
+                            
+                            <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('infusion', this)">
+                                <i class="fas fa-tint mr-2 w-5"></i> 输液器
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-xl text-white shadow-lg text-center">
+                        <i class="fas fa-file-pdf text-4xl mb-3 opacity-90"></i>
+                        <h3 class="font-bold text-lg mb-2">2024 完整目录</h3>
+                        <p class="text-blue-100 text-xs mb-4">下载详细PDF规格说明</p>
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="inline-block w-full bg-white text-blue-900 font-bold py-2 rounded-lg hover:bg-gray-100 transition shadow-sm">
+                            下载PDF
+                        </a>
+                    </div>
+                </aside>
+
+                <main class="lg:col-span-3">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-800">产品列表</h2>
+                        <span class="text-sm text-gray-500">显示 <span id="visible-count" class="font-bold text-blue-600">所有</span> 产品</span>
+                    </div>
+
+                    <div id="product-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        <!-- 可吸收缝合线 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="absorbable pga 缝合线" 
+                             data-name="PGA可吸收缝合线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="PGA可吸收缝合线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">PGA可吸收缝合线</h3>
+                                    <p class="text-gray-500 text-sm">聚乙醇酸可吸收缝合线</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">编织型</span>
+                                    <span class="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded">紫色</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-PGA</span>
+                                    <button onclick="showProductDetail('pga')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="absorbable pgla 缝合线" 
+                             data-name="PGLA可吸收缝合线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="PGLA可吸收缝合线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">PGLA可吸收缝合线</h3>
+                                    <p class="text-gray-500 text-sm">聚乳酸-羟基乙酸可吸收缝合线</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">编织型</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-PGLA</span>
+                                    <button onclick="showProductDetail('pgla')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="absorbable catgut 缝合线" 
+                             data-name="铬制肠线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="铬制肠线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">铬制肠线</h3>
+                                    <p class="text-gray-500 text-sm">天然羊肠线，铬处理</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-yellow-50 text-yellow-700 px-2 py-1 rounded">天然</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-CC</span>
+                                    <button onclick="showProductDetail('catgut')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 不可吸收缝合线 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="non-absorbable silk 缝合线" 
+                             data-name="真丝编织缝合线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="真丝编织缝合线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">真丝编织缝合线</h3>
+                                    <p class="text-gray-500 text-sm">天然真丝编织，不可吸收</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-800 text-white px-2 py-1 rounded">黑色</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">不可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-SK</span>
+                                    <button onclick="showProductDetail('silk')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="non-absorbable nylon 缝合线" 
+                             data-name="单丝尼龙缝合线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="单丝尼龙缝合线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">单丝尼龙缝合线</h3>
+                                    <p class="text-gray-500 text-sm">合成单丝尼龙，不可吸收</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">单丝</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">不可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-NL</span>
+                                    <button onclick="showProductDetail('nylon')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="non-absorbable polypropylene 缝合线" 
+                             data-name="单丝聚丙烯缝合线">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="单丝聚丙烯缝合线">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">单丝聚丙烯缝合线</h3>
+                                    <p class="text-gray-500 text-sm">合成单丝聚丙烯，不可吸收</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">单丝</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">不可吸收</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-PM</span>
+                                    <button onclick="showProductDetail('polypropylene')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 手术器械 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="blade 手术刀片" 
+                             data-name="手术刀片">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="手术刀片">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">手术刀片</h3>
+                                    <p class="text-gray-500 text-sm">一次性手术刀片</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">碳钢/不锈钢</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">伽马灭菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-SB</span>
+                                    <button onclick="showProductDetail('blade')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="scalpel 一次性手术刀" 
+                             data-name="一次性手术刀">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947581924-860b8b98299d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="一次性手术刀">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">一次性手术刀</h3>
+                                    <p class="text-gray-500 text-sm">塑柄一次性手术刀</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">铝箔包装</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">伽马灭菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-DS</span>
+                                    <button onclick="showProductDetail('scalpel')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="lancet 采血针" 
+                             data-name="采血针">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1596443686542-8e4b71385092?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="采血针">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">采血针</h3>
+                                    <p class="text-gray-500 text-sm">一次性采血针</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">安全型</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">无菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-BL</span>
+                                    <button onclick="showProductDetail('lancet')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 纱布敷料 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="gauze-swab 纱布片" 
+                             data-name="纱布片">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947581924-860b8b98299d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="纱布片">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">纱布片</h3>
+                                    <p class="text-gray-500 text-sm">医用纱布片</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">100%纯棉</span>
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">X射线可选</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-GS</span>
+                                    <button onclick="showProductDetail('gauze-swab')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="gauze-ball 纱布球" 
+                             data-name="纱布球">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947581924-860b8b98299d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="纱布球">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">纱布球</h3>
+                                    <p class="text-gray-500 text-sm">医用纱布球</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">100%纯棉</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">无菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-GB</span>
+                                    <button onclick="showProductDetail('gauze-ball')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="gauze-pad 腹部纱布垫" 
+                             data-name="腹部纱布垫">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947581924-860b8b98299d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="腹部纱布垫">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">腹部纱布垫</h3>
+                                    <p class="text-gray-500 text-sm">手术用腹部纱布垫</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">100%纯棉</span>
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">X射线</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-GP</span>
+                                    <button onclick="showProductDetail('gauze-pad')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 防护用品 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="mask 口罩" 
+                             data-name="医用口罩">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1582003492749-3d5d85b8e947?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="医用口罩">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">医用口罩</h3>
+                                    <p class="text-gray-500 text-sm">一次性医用口罩</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">三层防护</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">无菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-MK</span>
+                                    <button onclick="showProductDetail('mask')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="gown 手术衣" 
+                             data-name="手术衣">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="手术衣">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">手术衣</h3>
+                                    <p class="text-gray-500 text-sm">一次性手术衣</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">SMS/SMMS</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">加强型</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-SG</span>
+                                    <button onclick="showProductDetail('gown')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="coverall 防护服" 
+                             data-name="防护服">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="防护服">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">防护服</h3>
+                                    <p class="text-gray-500 text-sm">一次性防护服</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">PP+PE</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">AAMI Level 2</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-PC</span>
+                                    <button onclick="showProductDetail('coverall')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 手术包 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="surgical-pack 手术包" 
+                             data-name="通用手术包">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="通用手术包">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">无菌</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">通用手术包</h3>
+                                    <p class="text-gray-500 text-sm">标准手术包配置</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">SMS面料</span>
+                                    <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">EO灭菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-UPK</span>
+                                    <button onclick="showProductDetail('surgical-pack')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 注射器系列 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="syringe 注射器" 
+                             data-name="一次性注射器">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="一次性注射器">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">一次性注射器</h3>
+                                    <p class="text-gray-500 text-sm">三件套注射器</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">鲁尔锁/滑套</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">1ml-50ml</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-SY3P</span>
+                                    <button onclick="showProductDetail('syringe')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="syringe 牙科注射器" 
+                             data-name="牙科注射器">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="牙科注射器">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">牙科注射器</h3>
+                                    <p class="text-gray-500 text-sm">一次性牙科注射器</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-teal-50 text-teal-700 px-2 py-1 rounded">3合1</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">无菌</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-DGSY</span>
+                                    <button onclick="showProductDetail('dental-syringe')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="syringe 美容注射器" 
+                             data-name="美容注射器">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="美容注射器">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">美容注射器</h3>
+                                    <p class="text-gray-500 text-sm">一次性美容注射器</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-pink-50 text-pink-700 px-2 py-1 rounded">美容专用</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">PC材质</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-BTS</span>
+                                    <button onclick="showProductDetail('beauty-syringe')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 输液器 -->
+                        <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" 
+                             data-category="infusion 输液器" 
+                             data-name="一次性输液器">
+                            <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                                <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                     alt="一次性输液器">
+                                <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-lg text-gray-900 leading-tight">一次性输液器</h3>
+                                    <p class="text-gray-500 text-sm">静脉输液器</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">带滴斗</span>
+                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">流量调节器</span>
+                                </div>
+                                <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                    <span class="text-xs font-mono text-gray-400">Cat.# NQ-VIF</span>
+                                    <button onclick="showProductDetail('infusion')" class="text-sm font-bold text-blue-600 hover:text-blue-800">详情 &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="no-results" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-gray-300 mt-6">
+                        <i class="fas fa-search text-gray-300 text-5xl mb-4"></i>
+                        <h3 class="text-lg font-bold text-gray-900">未找到产品</h3>
+                        <p class="text-gray-500 mb-4">请尝试调整搜索条件或过滤器</p>
+                        <button onclick="resetFilters()" class="text-blue-600 font-bold hover:underline">清除过滤器</button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 bg-blue-900 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">联系我们</h2>
+                <p class="text-blue-100 max-w-3xl mx-auto">我们期待与您合作，为您提供优质的医疗产品和服务</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8">
+                    <h3 class="font-bold text-xl mb-6">联系信息</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                <i class="fab fa-whatsapp text-green-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">WhatsApp</div>
+                                <div class="text-blue-100 text-sm">+44 078 9504 7944 (UK)</div>
+                                <div class="text-blue-100 text-sm">+86 180 1266 9897 (中国)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope text-blue-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">邮箱</div>
+                                <div class="text-blue-100 text-sm">sales@v5md.com</div>
+                                <div class="text-blue-100 text-sm">v5md.com@gmail.com</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-red-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">地址</div>
+                                <div class="text-blue-100 text-sm">江苏省苏州市</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8">
+                    <h3 class="font-bold text-xl mb-6">发送询价</h3>
+                    <form class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">姓名</label>
+                                <input type="text" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-blue-200" placeholder="您的姓名">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">公司</label>
+                                <input type="text" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-blue-200" placeholder="公司名称">
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">邮箱</label>
+                                <input type="email" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-blue-200" placeholder="您的邮箱">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">电话</label>
+                                <input type="tel" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-blue-200" placeholder="联系电话">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">产品兴趣</label>
+                            <select class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white">
+                                <option value="">请选择产品类别</option>
+                                <option value="sutures">手术缝合线</option>
+                                <option value="instruments">手术器械</option>
+                                <option value="dressings">纱布敷料</option>
+                                <option value="protection">防护用品</option>
+                                <option value="packs">手术包</option>
+                                <option value="syringes">注射器</option>
+                                <option value="infusion">输液器</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">留言</label>
+                            <textarea rows="4" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-blue-200" placeholder="请详细描述您的需求..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-white text-blue-900 font-bold py-3 rounded-lg hover:bg-gray-100 transition">
+                            发送询价
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-8 mb-12">
+                <div class="md:col-span-3">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">专业的全球医疗耗材供应商</p>
+                    <p class="text-gray-400 text-sm italic">更专业、更安全、更可靠</p>
+                </div>
+                
+                <div class="hidden md:block md:col-span-1"></div>
+
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">快速链接</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">首页</a></li>
+                        <li><a href="#about" class="hover:text-white transition">关于我们</a></li>
+                        <li><a href="#products" class="hover:text-white transition">产品目录</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">联系我们</a></li>
+                        <li><a href="#" class="hover:text-white transition">隐私政策</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">联系信息</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +44 078 9504 7944 (UK)</p>
+                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +86 180 1266 9897 (中国)</p>
+                        <p><i class="fas fa-envelope text-blue-400 w-5"></i> sales@v5md.com</p>
+                        <p><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
+                        <p><i class="fas fa-map-marker-alt mt-1 w-5"></i> 江苏省苏州市</p>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">下载与社交</h4>
+                    <div class="space-y-2 mb-8 text-sm">
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> 产品目录</a>
+                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> 牙科套装</a>
+                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> 价格表</a>
+                    </div>
+                    
+                    <div class="flex gap-3 flex-wrap">
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://x.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-white mb-4">准备好您的下一个订单了吗？</p>
+                    <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
+                        <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> 我们配送至40多个国家</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA 认证</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> 快速配送</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>© 2025 V5 Medical LTD. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 产品详情模态框 -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent" class="p-4">
+                <!-- 产品详情内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后执行
+        window.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 100);
+            }
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('bg-blue-900');
+                navbar.classList.remove('bg-blue-900/90');
+            } else {
+                navbar.classList.remove('bg-blue-900');
+                navbar.classList.add('bg-blue-900/90');
+            }
+        });
+
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 搜索和过滤功能
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.product-card');
+        const noResults = document.getElementById('no-results');
+        const countLabel = document.getElementById('visible-count');
+
+        function updateGrid() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let visibleCount = 0;
+            let activeCategory = document.querySelector('.category-link.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || 'all';
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const category = card.dataset.category.toLowerCase();
+                const catNo = card.querySelector('.font-mono')?.innerText.toLowerCase() || '';
+                
+                // 逻辑：匹配搜索词 AND 匹配类别
+                const matchesSearch = name.includes(searchTerm) || category.includes(searchTerm) || catNo.includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || category.includes(activeCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 更新UI
+            noResults.classList.toggle('hidden', visibleCount > 0);
+            countLabel.textContent = visibleCount;
+        }
+
+        // 事件监听器
+        searchInput.addEventListener('keyup', updateGrid);
+
+        function filterCategory(category, element) {
+            // 更新活动样式
+            document.querySelectorAll('.category-link').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            // 切换类别时清除搜索以获得更好的用户体验
+            searchInput.value = '';
+            
+            // 重新运行网格更新
+            updateGrid();
+            
+            // 在移动设备上滚动到网格顶部
+            if(window.innerWidth < 1024) {
+                document.getElementById('product-grid').scrollIntoView({behavior: 'smooth'});
+            }
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            filterCategory('all', document.querySelector('.category-link'));
+        }
+
+        // 产品详情模态框
+        const modal = document.getElementById('productModal');
+        const span = document.getElementsByClassName('close')[0];
+        const modalContent = document.getElementById('modalContent');
+
+        // 关闭模态框
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // 产品详情数据
+        const productDetails = {
+            'pga': {
+                title: 'PGA可吸收缝合线',
+                subtitle: '聚乙醇酸可吸收缝合线',
+                image: 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=500',
+                features: [
+                    '材质：聚乙醇酸(PGA)',
+                    '结构：编织型',
+                    '颜色：紫色',
+                    '吸收时间：60-90天',
+                    '包装：12根/盒，100盒/箱',
+                    '认证：CE, ISO 13485'
+                ],
+                applications: [
+                    '一般软组织缝合',
+                    '皮肤缝合',
+                    '口腔颌面外科',
+                    '妇产科手术'
+                ],
+                specifications: [
+                    '线径：3/0, 2/0, 0, 1, 2',
+                    '长度：75cm, 150cm',
+                    '针型：圆针、角针可选',
+                    '灭菌方式：EO灭菌'
+                ]
+            },
+            'pgla': {
+                title: 'PGLA可吸收缝合线',
+                subtitle: '聚乳酸-羟基乙酸可吸收缝合线',
+                image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=500',
+                features: [
+                    '材质：聚乳酸-羟基乙酸(PGLA)',
+                    '结构：编织型',
+                    '颜色：紫色',
+                    '吸收时间：90-120天',
+                    '包装：12根/盒，100盒/箱',
+                    '认证：CE, ISO 13485'
+                ],
+                applications: [
+                    '深层组织缝合',
+                    '肌腱缝合',
+                    '整形外科',
+                    '心血管手术'
+                ],
+                specifications: [
+                    '线径：4/0, 3/0, 2/0, 0, 1',
+                    '长度：75cm, 150cm',
+                    '针型：圆针、角针可选',
+                    '灭菌方式：EO灭菌'
+                ]
+            },
+            'catgut': {
+                title: '铬制肠线',
+                subtitle: '天然羊肠线，铬处理',
+                image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500',
+                features: [
+                    '材质：天然羊肠',
+                    '处理：铬盐处理',
+                    '结构：编织型',
+                    '颜色：棕色',
+                    '吸收时间：60-90天',
+                    '包装：12根/盒，100盒/箱',
+                    '认证：CE, ISO 13485'
+                ],
+                applications: [
+                    '眼科手术',
+                    '耳鼻喉科手术',
+                    '口腔手术',
+                    '泌尿外科手术'
+                ],
+                specifications: [
+                    '线径：6/0, 5/0, 4/0, 3/0',
+                    '长度：75cm',
+                    '针型：圆针',
+                    '灭菌方式：EO灭菌'
+                ]
+            },
+            'silk': {
+                title: '真丝编织缝合线',
+                subtitle: '天然真丝编织，不可吸收',
+                image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500',
+                features: [
+                    '材质：天然真丝',
+                    '结构：编织型',
+                    '颜色：黑色',
+                    '吸收性：不可吸收',
+                    '包装：12根/盒，100盒/箱',
+                    '认证：CE, ISO 13485'
+                ],
+                applications: [
+                    '皮肤缝合',
+                    '口腔颌面外科',
+                    '眼科手术',
+                    '整形外科'
+                ],
+                specifications: [
+                    '线径：5/0, 4/0, 3/0, 2/0, 0',
+                    '长度：75cm, 150cm',
+                    '针型：圆针、角针可选',
+                    '灭菌方式：EO灭菌'
+                ]
+            },
+            'syringe': {
+                title: '一次性注射器',
+                subtitle: '三件套注射器',
+                image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500',
+                features: [
+                    '材质：医用级PP',
+                    '结构：三件套（针筒、活塞、针座）',
+                    '接口：鲁尔锁/滑套',
+                    '容量：1ml-50ml',
+                    '包装：100支/盒，10盒/箱',
+                    '认证：CE, ISO 13485'
+                ],
+                applications: [
+                    '皮下注射',
+                    '肌肉注射',
+                    '静脉注射',
+                    '药物配制'
+                ],
+                specifications: [
+                    '规格：1ml, 2ml, 5ml, 10ml, 20ml, 50ml',
+                    '针头：21G, 22G, 23G, 25G可选',
+                    '刻度：清晰刻度，易于读取',
+                    '灭菌方式：EO灭菌'
+                ]
+            }
+        };
+
+        // 显示产品详情
+        function showProductDetail(productId) {
+            const product = productDetails[productId];
+            if (!product) return;
+
+            let content = `
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-auto rounded-lg shadow-lg">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">${product.title}</h2>
+                        <p class="text-gray-600 mb-6">${product.subtitle}</p>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">产品特点</h3>
+                            <ul class="space-y-2">
+                                ${product.features.map(feature => `<li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i><span>${feature}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">适用范围</h3>
+                            <ul class="space-y-2">
+                                ${product.applications.map(app => `<li class="flex items-start gap-2"><i class="fas fa-stethoscope text-blue-500 mt-1"></i><span>${app}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">技术规格</h3>
+                            <ul class="space-y-2">
+                                ${product.specifications.map(spec => `<li class="flex items-start gap-2"><i class="fas fa-ruler-combined text-purple-500 mt-1"></i><span>${spec}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-lg transition flex items-center gap-2">
+                                <i class="fab fa-whatsapp"></i> WhatsApp咨询
+                            </a>
+                            <a href="mailto:sales@v5md.com?subject=询价：${product.title}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-lg transition flex items-center gap-2">
+                                <i class="fas fa-envelope"></i> 发送邮件
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modalContent.innerHTML = content;
+            modal.style.display = "block";
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
+        <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
+        <div id="google_translate_element"></div>
+    </div>
+    
+    <style>
+        .goog-te-gadget-icon { display: none !important; }
+        .goog-te-gadget-simple { background-color: transparent !important; border: none !important; padding: 0 !important; font-size: 14px !important; display: flex !important; align-items: center !important; }
+        .goog-te-gadget-simple span { color: #1e40af !important; font-weight: 600 !important; }
+        .goog-te-menu-value span { border-left: none !important; }
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+    </style>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'zh-CN', includedLanguages: 'en,es,fr,de,ru,ar'}, 'google_translate_element');
+        }
+    </script>
+</body>
+</html>
